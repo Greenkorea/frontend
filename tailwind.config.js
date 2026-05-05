@@ -16,6 +16,7 @@ export default {
       white: "#ffffff",
       black: "#000000",
       "blue-50": "#F2F7FE",
+      "blue-400": "#8BC3F8",
       transparent: "transparent",
     },
     extend: {
