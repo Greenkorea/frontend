@@ -1,6 +1,7 @@
 import { useModalStore } from "../stores/hooks";
 
 import Nav from "./Nav";
+import Footer from "./Footer";
 
 const Layout = ({ children }) => {
   const { modals } = useModalStore().state;
@@ -11,6 +12,7 @@ const Layout = ({ children }) => {
         <Nav />
         {children}
         {modals?.map((modal) => modal)}
+        <Footer />
       </div>
     </main>
   );
