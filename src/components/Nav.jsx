@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useModalStore } from "../stores/hooks";
 
 import AlertModal from "../modals/Alert";
+import QuestionModal from "../modals/Question";
 
 import ShareIcon from "../assets/share-b.png";
 import ShareIconHovered from "../assets/share-g.png";
@@ -48,13 +49,20 @@ const ShareButton = () => {
 };
 
 const QuestionButton = () => {
+  const { openModal } = useModalStore();
+
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleClickQuestion = () => {
+    openModal(<QuestionModal key="question-modal" />);
+  };
 
   return (
     <button
       type="button"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClickQuestion}
     >
       <div
         className="w-60 h-60 bg-cover bg-center"
