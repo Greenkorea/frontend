@@ -1,9 +1,20 @@
-const Modal = ({ children, backdrop = true }) => {
+import { useModalStore } from "../stores/hooks";
+
+const Modal = ({ children, backdrop = true, closeBackdrop = false }) => {
+  const { closeModal } = useModalStore();
+
+  const handleCloseBackdrop = () => {
+    if (closeBackdrop) {
+      closeModal();
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
       role="dialog"
       aria-modal="true"
+      onClick={handleCloseBackdrop}
     >
       {/* 배경 오버레이 - backdrop=false면 안보임 */}
       {backdrop && (

@@ -11,12 +11,23 @@ import QuestionIcon from "../assets/question-b.png";
 import QuestionIconHovered from "../assets/question-g.png";
 
 const ShareButton = () => {
-  const { openModal } = useModalStore();
+  const { openModal, closeModal } = useModalStore();
 
   const [isHovered, setIsHovered] = useState(false);
 
   const handleClickShare = () => {
-    openModal(<AlertModal key="alert-modal" />);
+    navigator.clipboard.writeText("https://www.greenocean.com");
+
+    openModal(
+      <AlertModal
+        key="alert-modal"
+        text={`주소가 복사되었습니다.\n원하는 곳에 붙여넣어 보세요!`}
+      />,
+    );
+
+    setTimeout(() => {
+      closeModal();
+    }, 3000);
   };
 
   return (
