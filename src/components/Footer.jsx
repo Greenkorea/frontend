@@ -1,6 +1,6 @@
 import IconFacebook from "../assets/facebook.png";
 import IconInstagram from "../assets/instagram.png";
-import IconTwitter from "../assets/twitter.png";
+// import IconTwitter from "../assets/twitter.png";
 import IconYoutube from "../assets/youtube.png";
 
 const Footer = () => {
@@ -10,9 +10,9 @@ const Footer = () => {
   const handleClickFacebook = () => {
     window.open("https://www.facebook.com/i.greenkorea/", "_blank");
   };
-  const handleClickTwitter = () => {
-    // window.open("https://www.twitter.com", "_blank");
-  };
+  // const handleClickTwitter = () => {
+  //   // window.open("https://www.twitter.com", "_blank");
+  // };
   const handleClickInstagram = () => {
     window.open("https://www.instagram.com/greenkorea_united/", "_blank");
   };
@@ -29,9 +29,9 @@ const Footer = () => {
         <button type="button" onClick={handleClickFacebook}>
           <img src={IconFacebook} alt="Facebook" className="w-24 h-24" />
         </button>
-        <button type="button" onClick={handleClickTwitter}>
+        {/* <button type="button" onClick={handleClickTwitter}>
           <img src={IconTwitter} alt="Twitter" className="w-24 h-24" />
-        </button>
+        </button> */}
         <button type="button" onClick={handleClickInstagram}>
           <img src={IconInstagram} alt="Instagram" className="w-24 h-24" />
         </button>

@@ -1,13 +1,13 @@
-import { useState } from "react";
-
 import Layout from "./components/Layout";
+
+import SectionTabs from "./components/Sections/Tabs";
+import SectionAccordion from "./components/Sections/Accordion";
 
 function App() {
   return (
     <Layout>
-      <section>
-        <h1 className="text-40 font-bold"></h1>
-      </section>
+      <SectionTabs />
+      <SectionAccordion />
     </Layout>
   );
 }
