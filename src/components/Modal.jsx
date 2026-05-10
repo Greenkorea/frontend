@@ -13,7 +13,7 @@ const Modal = ({ children, backdrop = true, closeBackdrop = false }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-[200] flex items-center justify-center"
       role="dialog"
       aria-modal="true"
       onClick={handleCloseBackdrop}
@@ -34,7 +34,10 @@ const Modal = ({ children, backdrop = true, closeBackdrop = false }) => {
 export const Layout = ({ children, bgColor = "#89AEFF" }) => {
   return (
     <div className="bg-[#DFFC8E] [filter:drop-shadow(0px_5px_15px_rgba(0,0,0,0.25))] w-[600px] h-[600px] rounded-full flex justify-center items-center">
-      <div className={`bg-[${bgColor}] w-[480px] h-[480px] p-30`}>
+      <div
+        className="w-[480px] h-[480px] p-30"
+        style={{ backgroundColor: bgColor }}
+      >
         {children}
       </div>
     </div>

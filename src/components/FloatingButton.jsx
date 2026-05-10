@@ -1,8 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 
+import { useModalStore } from "../stores/hooks";
+
+import ThirtyByThirtyModal from "../modals/ThirtyByThirty";
+
 import Icon30 from "../assets/thirty.png";
 
 const FloatingButton = () => {
+  const { openModal } = useModalStore();
+
   const [position, setPosition] = useState({ x: 500, y: 300 });
   const velocity = useRef({ x: 1, y: 1 });
   const isPaused = useRef(false);
@@ -38,12 +44,17 @@ const FloatingButton = () => {
     return () => cancelAnimationFrame(animationRef.current);
   }, []);
 
+  const handleClick = () => {
+    openModal(<ThirtyByThirtyModal key="thirty-by-thirty-modal" />);
+  };
+
   return (
     <div
       style={{ left: position.x, top: position.y }}
       className="fixed cursor-pointer select-none z-[100]"
       onMouseEnter={() => (isPaused.current = true)}
       onMouseLeave={() => (isPaused.current = false)}
+      onClick={handleClick}
     >
       <img
         src={Icon30}
