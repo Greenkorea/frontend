@@ -13,7 +13,7 @@ const Modal = ({ children, backdrop = true, closeBackdrop = false }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center"
+      className="fixed inset-0 z-[1000] flex items-center justify-center"
       role="dialog"
       aria-modal="true"
       onClick={handleCloseBackdrop}

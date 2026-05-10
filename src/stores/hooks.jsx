@@ -1,3 +1,4 @@
+import { useMapStore } from "./map";
 import { useModalStore } from "./modal";
 
-export { useModalStore };
+export { useMapStore, useModalStore };

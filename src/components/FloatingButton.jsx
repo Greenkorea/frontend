@@ -51,7 +51,7 @@ const FloatingButton = () => {
   return (
     <div
       style={{ left: position.x, top: position.y }}
-      className="fixed cursor-pointer select-none z-[100]"
+      className="fixed cursor-pointer select-none z-[500]"
       onMouseEnter={() => (isPaused.current = true)}
       onMouseLeave={() => (isPaused.current = false)}
       onClick={handleClick}

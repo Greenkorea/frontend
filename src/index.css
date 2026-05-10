@@ -6,3 +6,13 @@ body {
   font-family: "Asta Sans", sans-serif;
   background-color: #f2f7fe;
 }
+
+.custom-map-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.custom-map-tooltip::before {
+  display: none !important;
+}
