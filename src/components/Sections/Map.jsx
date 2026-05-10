@@ -94,6 +94,17 @@ const TAB_COLORS = {
   "eco-sea": "#BDD239",
 };
 
+const TYPE_COLOR = {
+  국립공원: "#6ED6FF",
+  습지보호지역: "#219CF7",
+  해양생태계보호구역: "#AADFF8",
+  천연기념물: "#51E7B0",
+  천연보호구역: "#69ADEE",
+  유네스코자연유산: "#44CEE4",
+  람사르습지: "#0266C6",
+  환경보전해역: "#BDD239",
+};
+
 const KOREA_BOUNDS = [
   [32.5, 124.5],
   [39.0, 132.5],
@@ -101,18 +112,33 @@ const KOREA_BOUNDS = [
 
 // ─── 내부: GeoJSON 레이어 + 자동 fitBounds ──────────────────────────────────
 
-function GeoJSONLayer({ data, onFeatureClick }) {
+function GeoJSONLayer({ data, onFeatureClick, color, activeTab }) {
   const map = useMap();
 
   const getStyle = useCallback(
-    (feature) =>
-      TYPE_STYLE[feature.properties.DESIG] ?? {
-        color: "#0b5394",
-        weight: 2,
-        opacity: 0.8,
-        fillOpacity: 0.3,
-      },
-    [],
+    (feature) => {
+      // 특정 탭 선택 시 → 탭 키컬러 통일
+      if (activeTab !== "all") {
+        return {
+          color,
+          weight: 2,
+          opacity: 1,
+          fillColor: color,
+          fillOpacity: 0.5,
+        };
+      }
+      // 전체 보기 시 → 타입별 색상
+      return (
+        TYPE_STYLE[feature.properties.DESIG] ?? {
+          color: "#6ED6FF",
+          weight: 2,
+          opacity: 1,
+          fillColor: "#6ED6FF",
+          fillOpacity: 0.5,
+        }
+      );
+    },
+    [activeTab, color],
   );
 
   const onEachFeature = useCallback(
@@ -122,17 +148,42 @@ function GeoJSONLayer({ data, onFeatureClick }) {
         feature.properties.NAME ??
         feature.properties.KOR_NM ??
         "";
-      if (name) layer.bindTooltip(name, { sticky: true });
+
+      if (name) {
+        const tooltipColor =
+          activeTab === "all"
+            ? (TYPE_COLOR[feature.properties.DESIG] ?? "#6ED6FF")
+            : color;
+
+        const tooltipHtml = `
+          <div style="
+            background: ${tooltipColor};
+            border: none;
+            border-radius: 0;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            white-space: nowrap;
+            line-height: 100%;
+          ">${name}</div>
+        `;
+        layer.bindTooltip(tooltipHtml, {
+          className: "custom-map-tooltip",
+          sticky: true,
+          direction: "top",
+          offset: [0, -8],
+        });
+      }
 
       layer.on("click", (e) => {
         L.DomEvent.stopPropagation(e);
         onFeatureClick(feature.properties);
       });
     },
-    [onFeatureClick],
+    [onFeatureClick, color],
   );
 
-  // 데이터가 바뀔 때 자동으로 화면 맞춤
   useEffect(() => {
     if (!data?.features?.length) return;
     try {
@@ -143,10 +194,9 @@ function GeoJSONLayer({ data, onFeatureClick }) {
 
   if (!data) return null;
 
-  // key를 features 수로 넣으면 데이터 교체 시 레이어가 완전히 재생성됨
   return (
     <GeoJSON
-      key={data.features.length + "-" + data.features[0]?.properties?.DESIG}
+      key={data.features.length + color}
       data={data}
       style={getStyle}
       onEachFeature={onEachFeature}
@@ -193,6 +243,7 @@ export default function SectionsMap() {
   const { activeTab } = useMapStore();
   const { data, loading } = useGeoData(activeTab);
   const { openModal } = useModalStore();
+  const color = TAB_COLORS[activeTab] ?? "#6ED6FF";
 
   const handleFeatureClick = useCallback(
     (properties) => {
@@ -230,9 +281,10 @@ export default function SectionsMap() {
             url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
           />
           <GeoJSONLayer
-            key={activeTab}
             data={data}
             onFeatureClick={handleFeatureClick}
+            color={color}
+            activeTab={activeTab}
           />
         </MapContainer>
       </div>
