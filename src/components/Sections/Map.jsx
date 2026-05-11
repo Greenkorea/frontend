@@ -247,13 +247,18 @@ export default function SectionsMap() {
 
   const handleFeatureClick = useCallback(
     (properties) => {
+      console.log("properties", properties);
+
       const name =
         properties.ORIG_NAME ??
         properties.NAME ??
         properties.KOR_NM ??
         "이름 없음";
       const type = properties.DESIG ?? "유형 정보 없음";
-      openModal(<AreaDetailModal name={name} type={type} />);
+
+      openModal(
+        <AreaDetailModal key="area-detail-modal" name={name} type={type} />,
+      );
     },
     [openModal],
   );
