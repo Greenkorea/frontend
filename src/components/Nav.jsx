@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useModalStore } from "../stores/hooks";
+import { useModalStore, useMapStore } from "../stores/hooks";
 
 import AlertModal from "../modals/Alert";
 import QuestionModal from "../modals/Question";
@@ -75,13 +75,21 @@ const QuestionButton = () => {
 };
 
 const Nav = () => {
+  const { setActiveTab } = useMapStore();
+
+  const handleClickLogo = () => {
+    setActiveTab("all");
+  };
+
   return (
     <nav className="flex justify-between items-end pt-64 pb-12">
       <div>
         <ShareButton />
       </div>
       <div>
-        <img src={Logo} alt="logo" className="w-[337px]" />
+        <div className="cursor-pointer" onClick={handleClickLogo}>
+          <img src={Logo} alt="logo" className="w-[337px]" />
+        </div>
       </div>
       <div>
         <QuestionButton />
