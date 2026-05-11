@@ -82,7 +82,7 @@ const Nav = () => {
   };
 
   return (
-    <nav className="flex justify-between items-end pt-64 pb-12">
+    <nav className="flex justify-between items-center pt-64 pb-40">
       <div>
         <ShareButton />
       </div>

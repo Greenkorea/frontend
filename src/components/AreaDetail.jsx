@@ -28,6 +28,7 @@ const AreaDetailModal = ({ name, type }) => {
   const fetchLocation = async () => {
     try {
       const response = await locationsActions.fetchLocation("신안"); // 임시로 신안으로 조회
+
       setLocation(response);
     } catch (error) {
       window.alert(
@@ -37,28 +38,27 @@ const AreaDetailModal = ({ name, type }) => {
     }
   };
 
-  if (!location)
-    return (
+  return (
+    <div className="fixed inset-0 z-[1000]" role="dialog" aria-modal="true">
       <div
-        class="fixed top-0 left-0 w-full h-full z-[1000] bg-[rgba(36,143,242,0.5)]"
+        className="absolute inset-0 bg-[rgba(36,143,242,0.5)]"
         aria-hidden="true"
       />
-    );
 
-  return (
-    <div className="fixed top-0 left-0 w-full h-full z-[1000] bg-white p-40">
-      <span
-        className="inline-block text-13 text-black px-10 py-4 rounded-6"
-        style={{ backgroundColor: TYPE_COLOR_MAP[type] ?? "#6ED6FF" }}
-      >
-        {type ?? "유형 정보 없음"}
-      </span>
-      {/* 응답 데이터 표시 영역 */}
-      {location ? (
-        <div className="mt-16">{/* location 데이터 활용 */}</div>
-      ) : (
-        <p className="mt-16 text-14 text-gray-3">불러오는 중...</p>
-      )}
+      <div className="w-full bg-white p-40 z-10 relative mt-[200px] shadow-[0_-5px_15px_0_rgba(0,0,0,0.25)]">
+        <span
+          className="inline-block text-13 text-black px-10 py-4 rounded-6"
+          style={{ backgroundColor: TYPE_COLOR_MAP[type] ?? "#6ED6FF" }}
+        >
+          {type ?? "유형 정보 없음"}
+        </span>
+        {/* 응답 데이터 표시 영역 */}
+        {location ? (
+          <div className="mt-16">{/* location 데이터 활용 */}</div>
+        ) : (
+          <p className="mt-16 text-14 text-gray-3">불러오는 중...</p>
+        )}
+      </div>
     </div>
   );
 };
