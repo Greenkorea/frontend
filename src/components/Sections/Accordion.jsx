@@ -297,12 +297,12 @@ const SectionAccordion = () => {
     { title: "만든 사람들", component: <Members />, keyColor: "#219CF7" },
     {
       title: "녹색연합?",
-      link: "https://www.greenkorea.com/repor",
+      link: "https://www.greenkorea.org",
       keyColor: "#64B5F6",
     },
     {
       title: "지난 보고서 모아보기",
-      link: "https://www.greenkorea.com/reports",
+      link: "https://drive.google.com/drive/u/0/folders/1mLgXYIjnhonO3GrWqa7Qgu3DWMdVMosi",
       keyColor: "#8BC3F8",
     },
     {

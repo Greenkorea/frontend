@@ -18,6 +18,23 @@ const InfoText = ({ children }) => {
 };
 
 const ThirtyByThirtyModal = () => {
+  const getDDay = () => {
+    const today = new Date();
+    const target = new Date("2030-12-31");
+    const diff = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+    return diff;
+  };
+
+  const getToday = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    const hh = String(today.getHours()).padStart(2, "0");
+    const min = String(today.getMinutes()).padStart(2, "0");
+    return `${yyyy}.${mm}.${dd} ${hh}:${min}`;
+  };
+
   return (
     <Modal backdrop={true} closeBackdrop={false}>
       <Layout bgColor="#EF7148">
@@ -43,13 +60,13 @@ const ThirtyByThirtyModal = () => {
               {Array.from({ length: 10 }).map((_, index) => (
                 <Circle active={false} key={index} isFirst={index === 0} />
               ))}
-              <InfoText>2026.04.06 13:11</InfoText>
+              <InfoText>{getToday()}</InfoText>
             </div>
             <div className="flex items-center relative">
               {Array.from({ length: 10 }).map((_, index) => (
                 <Circle active={false} key={index} isFirst={index === 0} />
               ))}
-              <InfoText>D-1728</InfoText>
+              <InfoText>D-{getDDay()}</InfoText>
             </div>
           </div>
         </div>

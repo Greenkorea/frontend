@@ -42,16 +42,28 @@ const Title = ({ data }) => {
 const Section = ({ children, isFirst = false }) => {
   return (
     <div
-      className={`py-30 border-b border-[#1E3A5F] ${isFirst ? "pt-23" : ""}`}
+      className={`py-30 ${isFirst ? "pt-23" : ""} border-b border-[#1E3A5F]`}
     >
       {children}
     </div>
   );
 };
 
+const SectionReport = ({ children }) => {
+  return <div className="pb-50">{children}</div>;
+};
+
 const SectionTitle = ({ children }) => {
   return (
-    <div className="text-43 font-bold leading-[110%] text-[#1E3A5F] mb-20">
+    <div className="text-32 font-bold leading-[110%] text-[#1E3A5F] mb-20">
+      {children}
+    </div>
+  );
+};
+
+const SectionSubTitle = ({ children }) => {
+  return (
+    <div className="text-24 font-bold leading-[110%] text-[#1E3A5F] mb-25">
       {children}
     </div>
   );
@@ -65,13 +77,134 @@ const SectionContent = ({ children }) => {
   );
 };
 
-const SectionItem = ({ children }) => {
+const Item = ({ children }) => {
   return <div className="">{children}</div>;
+};
+
+const DlList = ({ children }) => {
+  return <div className="grid gap-8">{children}</div>;
+};
+
+const Dl = ({ children }) => {
+  return <div className="grid grid-cols-[100px_1fr] gap-x-20">{children}</div>;
+};
+
+const Dt = ({ children }) => {
+  return (
+    <div className="text-22 font-medium leading-[150%] text-[#1E3A5F] pb-5 border-b border-[#1E3A5F]">
+      {children}
+    </div>
+  );
+};
+
+const Dd = ({ children }) => {
+  return (
+    <div className="text-22 font-medium leading-[150%] text-[#1E3A5F] pb-5 border-b border-[#1E3A5F]">
+      {children}
+    </div>
+  );
+};
+
+const BasicInfoComponent = ({ data }) => {
+  return (
+    <>
+      <Section isFirst>
+        <SectionTitle>기본정보</SectionTitle>
+        <SectionContent>
+          <Item>
+            <b>보호구역명</b>
+            <br />
+            {data.basic_info?.protected_area_name}
+          </Item>
+          <Item>
+            <b>소재지</b>
+            <br />
+            {data.basic_info?.address}
+          </Item>
+          <Item>
+            <b>면적</b>
+            <br />
+            {data.basic_info?.area}
+          </Item>
+          <Item>
+            <b>지정근거</b>
+            <br />
+            {data.basic_info?.designation_basis}
+          </Item>
+          <Item>
+            <b>보호구역 유형</b>
+            <br />
+            {data.basic_info?.protected_area_type}
+          </Item>
+          <Item>
+            <b>주요 표지판 위치</b>
+            <br />
+            {data.basic_info?.main_signage_locations}
+          </Item>
+          <Item>
+            <b>관리주체</b>
+            <br />
+            {data.basic_info?.managing_authority}
+          </Item>
+          <Item>
+            <b>관리조직</b>
+            <br />
+            {data.basic_info?.managing_organization}
+          </Item>
+          <Item>
+            <b>연락처</b>
+            <br />
+            {data.basic_info?.contact}
+          </Item>
+        </SectionContent>
+      </Section>
+      <Section>
+        <SectionTitle>생태 환경 현황</SectionTitle>
+        <SectionContent>
+          <Item>
+            <b>깃대종 및 주요 생물군</b>
+            <br />
+            {data.basic_info?.flagship_species_and_key_taxa}
+          </Item>
+          <Item>
+            <b>생태계 유형 및 특기사항</b>
+            <br />
+            {data.basic_info?.ecosystem_type_and_notes}
+          </Item>
+        </SectionContent>
+      </Section>
+      <Section>
+        <SectionTitle>이용 현황 및 영향</SectionTitle>
+        <SectionContent>
+          <Item>
+            <b>주요 어업 및 양식업</b>
+            <br />
+            {data.basic_info?.main_fisheries_and_aquaculture}
+          </Item>
+          <Item>
+            <b>관광 및 레저활동</b>
+            <br />
+            {data.basic_info?.tourism_and_leisure_activities}
+          </Item>
+          <Item>
+            <b>시설 및 인프라</b>
+            <br />
+            {data.basic_info?.facilities_and_infrastructure}
+          </Item>
+          <Item>
+            <b>특기사항</b>
+            <br />
+            {data.basic_info?.notes}
+          </Item>
+        </SectionContent>
+      </Section>
+    </>
+  );
 };
 
 const REPORT_COLORS = ["#BBDEFA", "#8BC3F8", "#64B5F6", "#219CF7", "#238EDD"];
 
-const SectionReport = ({ monthKey, report, index }) => {
+const ReportComponent = ({ monthKey, report, index }) => {
   const [isOpen, setIsOpen] = useState(false);
   const records = report.records || [];
   const bgColor = REPORT_COLORS[index] ?? "#238EDD";
@@ -105,14 +238,31 @@ const SectionReport = ({ monthKey, report, index }) => {
       {isOpen && (
         <div className="pb-20">
           {records.map((record, index) => (
-            <div key={index} className="grid gap-10 text-16 text-[#1E3A5F]">
+            <div
+              key={index}
+              className="grid gap-10 text-22 font-medium text-[#1E3A5F]"
+            >
               <ImageSlider images={record.image_urls} />
-              <div>
-                <b>조사 일시</b> {record.survey_datetime}
-              </div>
-              <div>
-                <b>조사 지역</b> {record.survey_scope}
-              </div>
+
+              <SectionReport>
+                <SectionSubTitle>
+                  {record.target_location}의 관리 평가
+                </SectionSubTitle>
+                <DlList>
+                  <Dl>
+                    <Dt>조사 일시</Dt>
+                    <Dd>
+                      {record.survey_datetime} 2025년 10월 1일 (날씨:{" "}
+                      {record.weather}, 기온: {record.temperature})
+                    </Dd>
+                  </Dl>
+                  <Dl>
+                    <Dt>조사 지역</Dt>
+                    <Dd>{record.survey_scope}</Dd>
+                  </Dl>
+                </DlList>
+              </SectionReport>
+
               <div>
                 <b>조사자</b> {record.surveyor}
               </div>
@@ -133,31 +283,37 @@ const SectionReport = ({ monthKey, report, index }) => {
   );
 };
 
+const getDriveImageUrl = (url) => {
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) {
+    // uc?export=view 대신 thumbnail 사용
+    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+  }
+  return url;
+};
+
 const ImageSlider = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!images || images.length === 0) return null;
 
   return (
-    <div className="relative mb-20">
+    <div className="relative mb-37">
       <div className="w-full overflow-hidden">
         <img
-          src={images[currentIndex]}
+          src={getDriveImageUrl(images[currentIndex])} // 변환 적용
           alt={`이미지 ${currentIndex + 1}`}
-          className="w-full object-cover"
+          className="w-full object-cover h-[369px]"
         />
       </div>
-
       {images.length > 1 && (
-        <div className="flex justify-center items-center gap-8 mt-12">
+        <div className="absolute bottom-14 left-0 flex justify-center items-center gap-8 w-full">
           {images.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-8 h-8 rounded-full transition-all ${
-                currentIndex === index
-                  ? "bg-[#1976D3]"
-                  : "bg-[#1976D3] opacity-40"
+              className={`w-6 h-6 rounded-full transition-all ${
+                currentIndex === index ? "bg-[#64B5F6]" : "bg-[#E4F2FD]"
               }`}
             />
           ))}
@@ -177,103 +333,14 @@ const Content = ({ data }) => {
     >
       <Container>
         <div className="flex">
-          <div className="w-1/2 pr-80">
-            <Section isFirst>
-              <SectionTitle>기본정보</SectionTitle>
-              <SectionContent>
-                <SectionItem>
-                  <b>보호구역명</b>
-                  <br />
-                  {data.basic_info?.protected_area_name}
-                </SectionItem>
-                <SectionItem>
-                  <b>소재지</b>
-                  <br />
-                  {data.basic_info?.address}
-                </SectionItem>
-                <SectionItem>
-                  <b>면적</b>
-                  <br />
-                  {data.basic_info?.area}
-                </SectionItem>
-                <SectionItem>
-                  <b>지정근거</b>
-                  <br />
-                  {data.basic_info?.designation_basis}
-                </SectionItem>
-                <SectionItem>
-                  <b>보호구역 유형</b>
-                  <br />
-                  {data.basic_info?.protected_area_type}
-                </SectionItem>
-                <SectionItem>
-                  <b>주요 표지판 위치</b>
-                  <br />
-                  {data.basic_info?.main_signage_locations}
-                </SectionItem>
-                <SectionItem>
-                  <b>관리주체</b>
-                  <br />
-                  {data.basic_info?.managing_authority}
-                </SectionItem>
-                <SectionItem>
-                  <b>관리조직</b>
-                  <br />
-                  {data.basic_info?.managing_organization}
-                </SectionItem>
-                <SectionItem>
-                  <b>연락처</b>
-                  <br />
-                  {data.basic_info?.contact}
-                </SectionItem>
-              </SectionContent>
-            </Section>
-            <Section>
-              <SectionTitle>생태 환경 현황</SectionTitle>
-              <SectionContent>
-                <SectionItem>
-                  <b>깃대종 및 주요 생물군</b>
-                  <br />
-                  {data.basic_info?.flagship_species_and_key_taxa}
-                </SectionItem>
-                <SectionItem>
-                  <b>생태계 유형 및 특기사항</b>
-                  <br />
-                  {data.basic_info?.ecosystem_type_and_notes}
-                </SectionItem>
-              </SectionContent>
-            </Section>
-            <Section>
-              <SectionTitle>이용 현황 및 영향</SectionTitle>
-              <SectionContent>
-                <SectionItem>
-                  <b>주요 어업 및 양식업</b>
-                  <br />
-                  {data.basic_info?.main_fisheries_and_aquaculture}
-                </SectionItem>
-                <SectionItem>
-                  <b>관광 및 레저활동</b>
-                  <br />
-                  {data.basic_info?.tourism_and_leisure_activities}
-                </SectionItem>
-                <SectionItem>
-                  <b>시설 및 인프라</b>
-                  <br />
-                  {data.basic_info?.facilities_and_infrastructure}
-                </SectionItem>
-                <SectionItem>
-                  <b>특기사항</b>
-                  <br />
-                  {data.basic_info?.notes}
-                </SectionItem>
-              </SectionContent>
-            </Section>
+          <div className="w-1/2 pr-80 pb-80">
+            <BasicInfoComponent data={data} />
           </div>
 
           <div className="w-1/2">
             {Object.entries(data.reports_by_month || {}).map(
               ([monthKey, report], index) => (
-                <SectionReport
+                <ReportComponent
                   key={monthKey}
                   monthKey={monthKey}
                   report={report}
@@ -300,7 +367,7 @@ const AreaDetail = ({ name }) => {
 
   const fetchLocation = async () => {
     try {
-      const response = await locationsActions.fetchLocation("전남 신안"); // 임시로 신안으로 조회
+      const response = await locationsActions.fetchLocation("부산 오륙도"); // 임시로 신안으로 조회
 
       setData(response);
     } catch (error) {
