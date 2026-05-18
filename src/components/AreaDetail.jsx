@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { useModalStore, useLocationsStore } from "../stores/hooks";
 
 import IconArrowY from "../assets/arrow-y.png";
+import IconArrowB from "../assets/arrow-black.png";
 
 const Container = ({ children }) => {
-  return <div className="px-20 w-[1320px] mx-auto">{children}</div>;
+  return <div className="px-80 w-[1440px] mx-auto">{children}</div>;
 };
 
 const Title = ({ data }) => {
@@ -50,7 +51,7 @@ const Section = ({ children, isFirst = false }) => {
 
 const SectionTitle = ({ children }) => {
   return (
-    <div className="text-32 font-bold leading-[110%] text-[#1E3A5F] mb-20">
+    <div className="text-43 font-bold leading-[110%] text-[#1E3A5F] mb-20">
       {children}
     </div>
   );
@@ -68,12 +69,110 @@ const SectionItem = ({ children }) => {
   return <div className="">{children}</div>;
 };
 
+const REPORT_COLORS = ["#BBDEFA", "#8BC3F8", "#64B5F6", "#219CF7", "#238EDD"];
+
+const SectionReport = ({ monthKey, report, index }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const records = report.records || [];
+  const bgColor = REPORT_COLORS[index] ?? "#238EDD";
+
+  return (
+    <div
+      className="border-b border-[#1E3A5F] py-16 px-80 mr-[-80px]"
+      style={{ backgroundColor: bgColor }}
+    >
+      <div
+        className="flex justify-between items-center py-20 cursor-pointer"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className="flex items-center gap-15">
+          <span className="text-32 font-bold leading-[110%] text-[#231F20]">
+            해양 보고서
+          </span>
+          <span className="text-20 font-bold leading-[110%] text-[#231F20]">
+            {monthKey}
+          </span>
+        </div>
+        <div className="flex items-center justify-center px-17">
+          <img
+            src={IconArrowB}
+            alt={isOpen ? "보고서 닫기" : "보고서 열기"}
+            className={`w-26 h-18 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          />
+        </div>
+      </div>
+
+      {isOpen && (
+        <div className="pb-20">
+          {records.map((record, index) => (
+            <div key={index} className="grid gap-10 text-16 text-[#1E3A5F]">
+              <ImageSlider images={record.image_urls} />
+              <div>
+                <b>조사 일시</b> {record.survey_datetime}
+              </div>
+              <div>
+                <b>조사 지역</b> {record.survey_scope}
+              </div>
+              <div>
+                <b>조사자</b> {record.surveyor}
+              </div>
+              <div>
+                <b>조사 방식</b> {record.survey_method}
+              </div>
+              <div>
+                <b>생태 가치</b> {record.field}
+              </div>
+              <div>
+                <b>특이 사항</b> {record.threat_factors}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ImageSlider = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  if (!images || images.length === 0) return null;
+
+  return (
+    <div className="relative mb-20">
+      <div className="w-full overflow-hidden">
+        <img
+          src={images[currentIndex]}
+          alt={`이미지 ${currentIndex + 1}`}
+          className="w-full object-cover"
+        />
+      </div>
+
+      {images.length > 1 && (
+        <div className="flex justify-center items-center gap-8 mt-12">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-8 h-8 rounded-full transition-all ${
+                currentIndex === index
+                  ? "bg-[#1976D3]"
+                  : "bg-[#1976D3] opacity-40"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Content = ({ data }) => {
   return (
     <div
       style={{
-        minWidth: "1320px",
-        background: "linear-gradient(to right, #64B5F6 50%, #8BC3F8 50%)",
+        minWidth: "1440px",
+        background: "linear-gradient(to right, #64B5F6 50%, #BBDEFA 50%)",
       }}
     >
       <Container>
@@ -81,7 +180,6 @@ const Content = ({ data }) => {
           <div className="w-1/2 pr-80">
             <Section isFirst>
               <SectionTitle>기본정보</SectionTitle>
-
               <SectionContent>
                 <SectionItem>
                   <b>보호구역명</b>
@@ -172,7 +270,18 @@ const Content = ({ data }) => {
             </Section>
           </div>
 
-          <div className="w-1/2 py-23 pl-80">오른쪽 콘텐츠</div>
+          <div className="w-1/2">
+            {Object.entries(data.reports_by_month || {}).map(
+              ([monthKey, report], index) => (
+                <SectionReport
+                  key={monthKey}
+                  monthKey={monthKey}
+                  report={report}
+                  index={index}
+                />
+              ),
+            )}
+          </div>
         </div>
       </Container>
     </div>
@@ -214,14 +323,13 @@ const AreaDetail = ({ name }) => {
       />
 
       {data && (
-        <div className="w-full bg-white z-10 relative mt-[200px] shadow-[0_-5px_15px_0_rgba(0,0,0,0.25)]">
-          <div className="sticky top-0 z-10">
+        <div className="min-w-[1440px] bg-white z-10 relative mt-[200px] shadow-[0_-5px_15px_0_rgba(0,0,0,0.25)]">
+          <div className="sticky top-0 z-10 min-w-[1440px]">
             <Title data={data} />
           </div>
           <Content data={data} />
         </div>
       )}
-      <div></div>
     </div>
   );
 };
