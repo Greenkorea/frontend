@@ -235,6 +235,33 @@ const ReportComponent = ({ monthKey, report, index }) => {
         </div>
       </div>
 
+      {/* {
+    "2025-10": {
+        "month": "2025-10",
+        "records": [
+            {
+                "target_location": "부산 오륙도",
+                "weather": "맑고 더움. 가끔 비",
+                "temperature": "최고 17.3\n최저 8.6",
+                "wind_speed": "2m/s",
+                "survey_scope": "오륙도 선착장 등 인접 지역",
+                "survey_method": "육안 조사",
+                "capture_tools": "스마트폰\n카메라",
+                "protected_area_status": "C",
+                "field": "오륙도는 이번 전수조사 대상 중 유일하게 대도시 시가지와 직접 맞닿은 해양보호구역임. 인구 340만의 광역시 한복판에 해양생태계보호구역이 지정되어 있다는 사실 자체는 의미 있지만, 동시에 도시 연안이 가진 모든 압력이 집약된 공간이기도 함. 지정 목적인 수직암반 생물상이 오랜 낚시 압력·수질 영향 속에서 어떻게 유지되고 있는지, 관리 실효성에 대한 현장 확인이 특히 중요한 지점.",
+                "biodiversity_status": "확인할 수 없음",
+                "threat_factors": "",
+                "damage_and_pollution_status": "낚시객들이 버린 쓰레기와 바다와 육지에서 밀려온 쓰레기가 곳곳에 쌓여 있음. 주변의 많은 선박이 지나고 있어 이곳의 해양생태계가 건강할 것으로 추정하기는 어려운 상황임. 관리 당국의 대대적인 조사와 현재 상태에 대한 진단이 반드시 필요함.",
+                "month": "2025-10",
+                "image_urls": [
+                    "https://drive.google.com/file/d/1FgknqklUuot-pHAPtlD4FA27Fc0tlFAN/view?usp=sharing",
+                    "https://drive.google.com/file/d/19KuE41x0QnA-np4abJEaviCxHcJdZ0yn/view?usp=sharing"
+                ]
+            }
+        ]
+    }
+} */}
+
       {isOpen && (
         <div className="pb-20">
           {records.map((record, index) => (
@@ -253,28 +280,68 @@ const ReportComponent = ({ monthKey, report, index }) => {
                     <Dt>조사 일시</Dt>
                     <Dd>
                       {record.survey_datetime} 2025년 10월 1일 (날씨:{" "}
-                      {record.weather}, 기온: {record.temperature})
+                      {record.weather}, 기온: {record.temperature}, 풍속:{" "}
+                      {record.wind_speed})
                     </Dd>
                   </Dl>
                   <Dl>
-                    <Dt>조사 지역</Dt>
+                    <Dt>조사 범위</Dt>
                     <Dd>{record.survey_scope}</Dd>
+                  </Dl>
+                  <Dl>
+                    <Dt>조사자</Dt>
+                    <Dd>{record.surveyor}</Dd>
+                  </Dl>
+                  <Dl>
+                    <Dt>조사 방식</Dt>
+                    <Dd>{record.survey_method}</Dd>
+                  </Dl>
+                  <Dl>
+                    <Dt>조사 도구</Dt>
+                    <Dd>{record.capture_tools}</Dd>
                   </Dl>
                 </DlList>
               </SectionReport>
 
-              <div>
-                <b>조사자</b> {record.surveyor}
-              </div>
-              <div>
-                <b>조사 방식</b> {record.survey_method}
-              </div>
-              <div>
-                <b>생태 가치</b> {record.field}
-              </div>
-              <div>
-                <b>특이 사항</b> {record.threat_factors}
-              </div>
+              <SectionReport>
+                <SectionSubTitle>
+                  주요 환경 위협 요인 및 훼손 현황
+                </SectionSubTitle>
+                <DlList>
+                  <Dl>
+                    <Dt>
+                      보호구역
+                      <br />
+                      상태
+                    </Dt>
+                    <Dd>{record.protected_area_status}</Dd>
+                  </Dl>
+                  <Dl>
+                    <Dt>평가</Dt>
+                    <Dd>{record.evaluation}</Dd>
+                  </Dl>
+                  <Dl>
+                    <Dt>
+                      생물 다양성
+                      <br />
+                      상태
+                    </Dt>
+                    <Dd>{record.biodiversity_status}</Dd>
+                  </Dl>
+                  <Dl>
+                    <Dt>위협 요인</Dt>
+                    <Dd>{record.threat_factors}</Dd>
+                  </Dl>
+                  <Dl>
+                    <Dt>
+                      훼손 오염
+                      <br />
+                      상태
+                    </Dt>
+                    <Dd>{record.damage_and_pollution_status}</Dd>
+                  </Dl>
+                </DlList>
+              </SectionReport>
             </div>
           ))}
         </div>

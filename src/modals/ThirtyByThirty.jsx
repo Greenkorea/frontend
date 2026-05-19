@@ -25,16 +25,6 @@ const ThirtyByThirtyModal = () => {
     return diff;
   };
 
-  const getToday = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
-    const hh = String(today.getHours()).padStart(2, "0");
-    const min = String(today.getMinutes()).padStart(2, "0");
-    return `${yyyy}.${mm}.${dd} ${hh}:${min}`;
-  };
-
   return (
     <Modal backdrop={true} closeBackdrop={false}>
       <Layout bgColor="#EF7148">
@@ -60,7 +50,7 @@ const ThirtyByThirtyModal = () => {
               {Array.from({ length: 10 }).map((_, index) => (
                 <Circle active={false} key={index} isFirst={index === 0} />
               ))}
-              <InfoText>{getToday()}</InfoText>
+              <InfoText>2030.12.31</InfoText>
             </div>
             <div className="flex items-center relative">
               {Array.from({ length: 10 }).map((_, index) => (
