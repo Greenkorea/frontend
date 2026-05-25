@@ -42,7 +42,7 @@ const Title = ({ data }) => {
 const Section = ({ children, isFirst = false }) => {
   return (
     <div
-      className={`py-30 ${isFirst ? "pt-23" : ""} border-b border-[#1E3A5F]`}
+      className={`py-30 ${isFirst ? "pt-36" : ""} border-b border-[#1E3A5F]`}
     >
       {children}
     </div>
@@ -204,14 +204,14 @@ const BasicInfoComponent = ({ data }) => {
 
 const REPORT_COLORS = ["#BBDEFA", "#8BC3F8", "#64B5F6", "#219CF7", "#238EDD"];
 
-const ReportComponent = ({ monthKey, report, index }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const ReportComponent = ({ monthKey, report, index, onlyOne = false }) => {
+  const [isOpen, setIsOpen] = useState(onlyOne ? true : false);
   const records = report.records || [];
   const bgColor = REPORT_COLORS[index] ?? "#238EDD";
 
   return (
     <div
-      className="border-b border-[#1E3A5F] py-16 px-80 mr-[-80px]"
+      className={`border-b border-[#1E3A5F] py-16 px-80 mr-[-80px] ${onlyOne ? "border-b-0" : ""}`}
       style={{ backgroundColor: bgColor }}
     >
       <div
@@ -234,33 +234,6 @@ const ReportComponent = ({ monthKey, report, index }) => {
           />
         </div>
       </div>
-
-      {/* {
-    "2025-10": {
-        "month": "2025-10",
-        "records": [
-            {
-                "target_location": "부산 오륙도",
-                "weather": "맑고 더움. 가끔 비",
-                "temperature": "최고 17.3\n최저 8.6",
-                "wind_speed": "2m/s",
-                "survey_scope": "오륙도 선착장 등 인접 지역",
-                "survey_method": "육안 조사",
-                "capture_tools": "스마트폰\n카메라",
-                "protected_area_status": "C",
-                "field": "오륙도는 이번 전수조사 대상 중 유일하게 대도시 시가지와 직접 맞닿은 해양보호구역임. 인구 340만의 광역시 한복판에 해양생태계보호구역이 지정되어 있다는 사실 자체는 의미 있지만, 동시에 도시 연안이 가진 모든 압력이 집약된 공간이기도 함. 지정 목적인 수직암반 생물상이 오랜 낚시 압력·수질 영향 속에서 어떻게 유지되고 있는지, 관리 실효성에 대한 현장 확인이 특히 중요한 지점.",
-                "biodiversity_status": "확인할 수 없음",
-                "threat_factors": "",
-                "damage_and_pollution_status": "낚시객들이 버린 쓰레기와 바다와 육지에서 밀려온 쓰레기가 곳곳에 쌓여 있음. 주변의 많은 선박이 지나고 있어 이곳의 해양생태계가 건강할 것으로 추정하기는 어려운 상황임. 관리 당국의 대대적인 조사와 현재 상태에 대한 진단이 반드시 필요함.",
-                "month": "2025-10",
-                "image_urls": [
-                    "https://drive.google.com/file/d/1FgknqklUuot-pHAPtlD4FA27Fc0tlFAN/view?usp=sharing",
-                    "https://drive.google.com/file/d/19KuE41x0QnA-np4abJEaviCxHcJdZ0yn/view?usp=sharing"
-                ]
-            }
-        ]
-    }
-} */}
 
       {isOpen && (
         <div className="pb-20">
@@ -391,6 +364,15 @@ const ImageSlider = ({ images }) => {
 };
 
 const Content = ({ data }) => {
+  const testData = [
+    Object.entries(data.reports_by_month || {})[0],
+    Object.entries(data.reports_by_month || {})[0],
+    Object.entries(data.reports_by_month || {})[0],
+    Object.entries(data.reports_by_month || {})[0],
+    Object.entries(data.reports_by_month || {})[0],
+    Object.entries(data.reports_by_month || {})[0],
+  ];
+
   return (
     <div
       style={{
@@ -405,16 +387,19 @@ const Content = ({ data }) => {
           </div>
 
           <div className="w-1/2">
-            {Object.entries(data.reports_by_month || {}).map(
-              ([monthKey, report], index) => (
-                <ReportComponent
-                  key={monthKey}
-                  monthKey={monthKey}
-                  report={report}
-                  index={index}
-                />
-              ),
-            )}
+            {/* {Object.entries(data.reports_by_month || {}).map( */}
+            {testData.map(([monthKey, report], index) => (
+              <ReportComponent
+                key={monthKey}
+                monthKey={monthKey}
+                report={report}
+                index={index}
+                // onlyOne={
+                //   Object.entries(data.reports_by_month || {}).length === 1
+                // }
+                onlyOne={false}
+              />
+            ))}
           </div>
         </div>
       </Container>

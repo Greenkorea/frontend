@@ -3,7 +3,7 @@ import Modal, { Layout, Title } from "../components/Modal";
 const Circle = ({ active = false, isFirst = false }) => {
   return (
     <div
-      className={`w-[49.7px] h-[49.7px] rounded-full ${isFirst ? "ml-0" : "ml-[-9.7px]"}`}
+      className={`w-[49.7px] h-[49.7px] rounded-full ${isFirst ? "ml-0" : "ml-[-9.7px]"} ${active ? "z-10" : "z-0"}`}
       style={{ backgroundColor: active ? "#1976D3" : "#FFFFFF" }}
     ></div>
   );

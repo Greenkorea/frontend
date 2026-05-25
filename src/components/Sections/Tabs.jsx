@@ -5,7 +5,7 @@ import { useMapStore } from "../../stores/hooks";
 const Tab = ({ title, keyColor, active = false, isFirst = false, onClick }) => {
   return (
     <div
-      className={`${isFirst ? "min-w-[140px]" : "flex-1"} flex justify-center items-center py-20 px-2 text-16 font-semibold leading-[100%] text-black cursor-pointer`}
+      className={`${isFirst ? "min-w-[140px]" : "flex-1"} flex justify-center items-center py-20 px-2 text-14 font-semibold leading-[100%] text-black cursor-pointer`}
       style={{ backgroundColor: active ? keyColor : "#89AEFF" }}
       onClick={onClick}
     >
@@ -85,7 +85,7 @@ const items = [
   {
     id: "scenic",
     title: "명승",
-    keyColor: "#BDD239",
+    keyColor: "#D6F775",
     description:
       "자연경관이 뛰어나고 역사 문화적 가치가 융합된 해안 지역 중 국가가 지정하여 관리하는 보호구역",
   },
@@ -108,7 +108,7 @@ const SectionTabs = () => {
   };
 
   return (
-    <div className={`${openIndex === null ? "mb-136" : "mb-[80.5px]"}`}>
+    <div className="mb-0">
       <div className="flex items-center justify-center">
         {items.map((item, index) => (
           <Tab

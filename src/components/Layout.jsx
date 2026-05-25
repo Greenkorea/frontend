@@ -9,9 +9,19 @@ const Layout = ({ children }) => {
   const hasModal = modals?.length > 0;
 
   useEffect(() => {
-    document.body.style.overflow = hasModal ? "hidden" : "";
+    if (hasModal) {
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    }
+
     return () => {
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
     };
   }, [hasModal]);
 
