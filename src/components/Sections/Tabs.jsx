@@ -48,22 +48,14 @@ const items = [
       "갯벌, 암석해안, 해안사구 등 경관적 가치가 뛰어나 해양 관광과 심미적 보전이 필요한 해역",
   },
   {
-    id: "tidal-flat",
-    title: "갯벌보호지역",
+    id: "tidal-wetland",
+    title: "갯벌·습지보호지역",
     keyColor: "#51E7B0",
-    description:
-      "생태적 가치가 높은 갯벌을 체계적으로 관리하기 위해 지정됐으며, 유네스코 세계자연유산의 근간을 이루는 보호지역",
-  },
-  {
-    id: "wetland",
-    title: "습지보호지역",
-    keyColor: "#69ADEE",
-    description:
-      "희귀 동식물이 서식하거나 수질 보전 기능을 수행하여 법적 보호를 받는 지역으로, 람사르습지가 포함되는 연안 습지",
+    description: "",
   },
   {
     id: "park",
-    title: "자연공원",
+    title: "국립·도립공원",
     keyColor: "#44CEE4",
     description:
       "해상 및 해안 국립공원이나 시·도립 공원을 포함하며, 뛰어난 자연 생태계와 수려한 경관을 함께 보전하는 대규모 공원 해역",
@@ -77,17 +69,10 @@ const items = [
   },
   {
     id: "reserve",
-    title: "천연보호구역",
+    title: "천연기념물·천연보호구역",
     keyColor: "#BDD239",
     description:
       "독도, 문섬 등 지질학적 가치와 천연기념물의 서식 환경을 보전하기 위해 지정된 역사·자연 보존 구역",
-  },
-  {
-    id: "scenic",
-    title: "명승",
-    keyColor: "#D6F775",
-    description:
-      "자연경관이 뛰어나고 역사 문화적 가치가 융합된 해안 지역 중 국가가 지정하여 관리하는 보호구역",
   },
   {
     id: "oecm",

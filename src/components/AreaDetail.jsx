@@ -220,7 +220,7 @@ const ReportComponent = ({ monthKey, report, index, onlyOne = false }) => {
       >
         <div className="flex items-center gap-15">
           <span className="text-32 font-bold leading-[110%] text-[#231F20]">
-            해양 보고서
+            모니터링 리포트
           </span>
           <span className="text-20 font-bold leading-[110%] text-[#231F20]">
             {monthKey}
@@ -364,15 +364,6 @@ const ImageSlider = ({ images }) => {
 };
 
 const Content = ({ data }) => {
-  const testData = [
-    Object.entries(data.reports_by_month || {})[0],
-    Object.entries(data.reports_by_month || {})[0],
-    Object.entries(data.reports_by_month || {})[0],
-    Object.entries(data.reports_by_month || {})[0],
-    Object.entries(data.reports_by_month || {})[0],
-    Object.entries(data.reports_by_month || {})[0],
-  ];
-
   return (
     <div
       style={{
@@ -387,19 +378,19 @@ const Content = ({ data }) => {
           </div>
 
           <div className="w-1/2">
-            {/* {Object.entries(data.reports_by_month || {}).map( */}
-            {testData.map(([monthKey, report], index) => (
-              <ReportComponent
-                key={monthKey}
-                monthKey={monthKey}
-                report={report}
-                index={index}
-                // onlyOne={
-                //   Object.entries(data.reports_by_month || {}).length === 1
-                // }
-                onlyOne={false}
-              />
-            ))}
+            {Object.entries(data.reports_by_month || {}).map(
+              ([monthKey, report], index) => (
+                <ReportComponent
+                  key={monthKey}
+                  monthKey={monthKey}
+                  report={report}
+                  index={index}
+                  onlyOne={
+                    Object.entries(data.reports_by_month || {}).length === 1
+                  }
+                />
+              ),
+            )}
           </div>
         </div>
       </Container>
