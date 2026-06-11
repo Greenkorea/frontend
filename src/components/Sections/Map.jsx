@@ -287,13 +287,11 @@ export default function SectionsMap() {
 
   const handleFeatureClick = useCallback(
     (properties) => {
-      const name =
-        properties.ORIG_NAME ??
-        properties.NAME ??
-        properties.KOR_NM ??
-        "이름 없음";
+      const name = properties.REPORT_NAME;
 
-      openModal(<AreaDetail key="area-detail-modal" name={name} />);
+      if (name) {
+        openModal(<AreaDetail key="area-detail-modal" name={name} />);
+      }
     },
     [openModal],
   );
