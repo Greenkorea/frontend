@@ -410,7 +410,7 @@ const AreaDetail = ({ name }) => {
 
   const fetchLocation = async () => {
     try {
-      const response = await locationsActions.fetchLocation("부산 오륙도"); // 임시로 신안으로 조회
+      const response = await locationsActions.fetchLocation(name);
 
       setData(response);
     } catch (error) {
