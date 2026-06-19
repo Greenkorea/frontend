@@ -1,6 +1,12 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, useCallback } from "react";
-import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  useMap,
+  ZoomControl,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -12,25 +18,32 @@ import AreaDetail from "../../components/AreaDetail";
 
 const TABS = [
   { id: "all", label: "전체 보기", files: [] },
-  { id: "ecosystem", label: "해양생태계보호구역", files: ["marine.geojson"] },
-  { id: "marine-bio", label: "해양생물보호구역", files: ["marine.geojson"] },
-  { id: "landscape", label: "해양경관보호구역", files: ["marine.geojson"] },
+  // 해양생태계·해양생물·해양경관보호구역 → 해양보호구역으로 통합
+  {
+    id: "marine",
+    label: "해양보호구역",
+    files: ["marine.geojson"],
+  },
+  // 갯벌보호지역 + 습지보호지역 → 갯벌·습지보호지역으로 통합
   {
     id: "tidal-wetland",
     label: "갯벌·습지보호지역",
     files: ["tidal.geojson", "wetland.geojson"],
   },
+  // 자연공원 → 국립·도립공원
   {
     id: "park",
     label: "국립·도립공원",
     files: ["national-park.geojson", "provincial-park.geojson"],
   },
   { id: "island", label: "특정도서", files: ["island.geojson"] },
+  // 천연보호구역 + 천연기념물 → 천연기념물·천연보호구역으로 통합
   {
     id: "reserve",
     label: "천연기념물·천연보호구역",
     files: ["nature-reserve.geojson", "monument.geojson"],
   },
+  // OECM: json 추후 추가 예정
   { id: "oecm", label: "OECM", files: [] },
 ];
 
@@ -38,19 +51,19 @@ const TABS = [
 const ALL_FILES = [...new Set(TABS.flatMap((t) => t.files))];
 
 const TYPE_STYLE = {
-  // 해양보호구역_해수부.geojson
+  // marine.geojson (해양보호구역_해수부)
   해양보호구역: {
-    color: "#AADFF8",
+    color: "#6ED6FF",
     weight: 2,
     opacity: 1,
-    fillColor: "#AADFF8",
+    fillColor: "#6ED6FF",
     fillOpacity: 0.5,
   },
   "해양보호구역(해양생물)": {
-    color: "#219CF7",
+    color: "#6ED6FF",
     weight: 2,
     opacity: 1,
-    fillColor: "#219CF7",
+    fillColor: "#6ED6FF",
     fillOpacity: 0.5,
   },
   "해양보호구역(경관)": {
@@ -60,87 +73,85 @@ const TYPE_STYLE = {
     fillColor: "#6ED6FF",
     fillOpacity: 0.5,
   },
-  // 갯벌습지보호지역_해수부.geojson + 해양보호구역_해수부.geojson 혼재
+  // tidal.geojson (갯벌습지보호지역_해수부) + marine.geojson 혼재
   "습지보호지역-갯벌": {
-    color: "#51E7B0",
+    color: "#219CF7",
     weight: 2,
     opacity: 1,
-    fillColor: "#51E7B0",
+    fillColor: "#219CF7",
     fillOpacity: 0.5,
   },
-  // 습지보호지역_시도.geojson
+  // wetland.geojson (습지보호지역_시도)
   "습지보호지역-시도": {
+    color: "#219CF7",
+    weight: 2,
+    opacity: 1,
+    fillColor: "#219CF7",
+    fillOpacity: 0.5,
+  },
+  // national-park.geojson
+  국립공원: {
     color: "#51E7B0",
     weight: 2,
     opacity: 1,
     fillColor: "#51E7B0",
     fillOpacity: 0.5,
   },
-  // 국립공원_환경부.geojson
-  국립공원: {
-    color: "#44CEE4",
-    weight: 2,
-    opacity: 1,
-    fillColor: "#44CEE4",
-    fillOpacity: 0.5,
-  },
-  // 도립공원_환경부.geojson
+  // provincial-park.geojson
   도립공원: {
-    color: "#44CEE4",
+    color: "#51E7B0",
     weight: 2,
     opacity: 1,
-    fillColor: "#44CEE4",
+    fillColor: "#51E7B0",
     fillOpacity: 0.5,
   },
-  // 특정도서_환경부.geojson
+  // island.geojson
   특정도서: {
+    color: "#69ADEE",
+    weight: 2,
+    opacity: 1,
+    fillColor: "#69ADEE",
+    fillOpacity: 0.5,
+  },
+  // nature-reserve.geojson
+  천연보호구역: {
     color: "#0266C6",
     weight: 2,
     opacity: 1,
     fillColor: "#0266C6",
     fillOpacity: 0.5,
   },
-  // 천연보호구역_국가유산청.geojson
-  천연보호구역: {
-    color: "#69ADEE",
-    weight: 2,
-    opacity: 1,
-    fillColor: "#69ADEE",
-    fillOpacity: 0.5,
-  },
-  // 천연기념물_국가유산청.geojson
+  // monument.geojson
   천연기념물: {
-    color: "#69ADEE",
+    color: "#0266C6",
     weight: 2,
     opacity: 1,
-    fillColor: "#69ADEE",
+    fillColor: "#0266C6",
     fillOpacity: 0.5,
   },
 };
 
 const TAB_COLORS = {
-  all: "#AADFF8",
-  ecosystem: "#AADFF8",
-  "marine-bio": "#219CF7",
-  landscape: "#6ED6FF",
-  "tidal-wetland": "#51E7B0",
-  park: "#44CEE4",
-  island: "#0266C6",
-  reserve: "#69ADEE",
+  all: "#6ED6FF",
+  marine: "#6ED6FF",
+  "tidal-wetland": "#219CF7",
+  park: "#51E7B0",
+  island: "#69ADEE",
+  reserve: "#0266C6",
   oecm: "#BDD239",
 };
 
 const TYPE_COLOR = {
-  해양보호구역: "#AADFF8",
-  "해양보호구역(해양생물)": "#219CF7",
+  해양보호구역: "#6ED6FF",
+  "해양보호구역(해양생물)": "#6ED6FF",
   "해양보호구역(경관)": "#6ED6FF",
-  "습지보호지역-갯벌": "#51E7B0",
-  "습지보호지역-시도": "#51E7B0",
-  국립공원: "#44CEE4",
-  도립공원: "#44CEE4",
-  특정도서: "#0266C6",
-  천연보호구역: "#69ADEE",
-  천연기념물: "#69ADEE",
+  "습지보호지역-갯벌": "#219CF7",
+  "습지보호지역-시도": "#219CF7",
+  국립공원: "#51E7B0",
+  도립공원: "#51E7B0",
+  특정도서: "#69ADEE",
+  천연보호구역: "#0266C6",
+  천연기념물: "#0266C6",
 };
 
 const KOREA_BOUNDS = [
@@ -166,10 +177,10 @@ function GeoJSONLayer({ data, onFeatureClick, color, activeTab }) {
       }
       return (
         TYPE_STYLE[feature.properties.DESIG] ?? {
-          color: "#AADFF8",
+          color: "#6ED6FF",
           weight: 2,
           opacity: 1,
-          fillColor: "#AADFF8",
+          fillColor: "#6ED6FF",
           fillOpacity: 0.5,
         }
       );
@@ -188,7 +199,7 @@ function GeoJSONLayer({ data, onFeatureClick, color, activeTab }) {
       if (name) {
         const tooltipColor =
           activeTab === "all"
-            ? (TYPE_COLOR[feature.properties.DESIG] ?? "#AADFF8")
+            ? (TYPE_COLOR[feature.properties.DESIG] ?? "#6ED6FF")
             : color;
 
         const tooltipHtml = `
@@ -247,7 +258,7 @@ function useGeoData(tabId) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setData(null); // 탭 전환 시 초기화
+    setData(null);
 
     const tab = TABS.find((t) => t.id === tabId);
     const filesToLoad = tabId === "all" ? ALL_FILES : (tab?.files ?? []);
@@ -283,7 +294,7 @@ export default function SectionsMap() {
   const { activeTab } = useMapStore();
   const { data, loading } = useGeoData(activeTab);
   const { openModal } = useModalStore();
-  const color = TAB_COLORS[activeTab] ?? "#AADFF8";
+  const color = TAB_COLORS[activeTab] ?? "#6ED6FF";
 
   const handleFeatureClick = useCallback(
     (properties) => {
@@ -297,8 +308,8 @@ export default function SectionsMap() {
   );
 
   return (
-    <section className="w-full flex flex-col">
-      <div className="relative w-full" style={{ height: 520 }}>
+    <section className="w-full flex flex-col pt-87">
+      <div className="relative w-full" style={{ height: 645 }}>
         {loading && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60">
             <span className="text-14 text-gray-3">불러오는 중...</span>
@@ -311,12 +322,13 @@ export default function SectionsMap() {
           maxBounds={KOREA_BOUNDS}
           maxBoundsViscosity={1.0}
           style={{ width: "100%", height: "100%" }}
-          zoomControl={true}
+          zoomControl={false}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
           />
+          <ZoomControl position="bottomleft" />
           <GeoJSONLayer
             data={data}
             onFeatureClick={handleFeatureClick}

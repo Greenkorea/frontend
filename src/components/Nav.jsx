@@ -7,7 +7,7 @@ import QuestionModal from "../modals/Question";
 
 import ShareIcon from "../assets/share-b.png";
 import ShareIconHovered from "../assets/share-g.png";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/logo.gif";
 import QuestionIcon from "../assets/question-b.png";
 import QuestionIconHovered from "../assets/question-g.png";
 
@@ -88,7 +88,7 @@ const Nav = () => {
       </div>
       <div>
         <div className="cursor-pointer" onClick={handleClickLogo}>
-          <img src={Logo} alt="logo" className="w-[337px]" />
+          <img src={Logo} alt="logo" className="w-[387px]" />
         </div>
       </div>
       <div>

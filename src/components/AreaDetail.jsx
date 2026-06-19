@@ -204,10 +204,18 @@ const BasicInfoComponent = ({ data }) => {
 
 const REPORT_COLORS = ["#BBDEFA", "#8BC3F8", "#64B5F6", "#219CF7", "#238EDD"];
 
-const ReportComponent = ({ monthKey, report, index, onlyOne = false }) => {
+const ReportComponent = ({
+  monthKey,
+  report,
+  index,
+  onlyOne = false,
+  graphImage,
+}) => {
   const [isOpen, setIsOpen] = useState(onlyOne ? true : false);
   const records = report.records || [];
   const bgColor = REPORT_COLORS[index] ?? "#238EDD";
+
+  console.log(records);
 
   return (
     <div
@@ -248,6 +256,17 @@ const ReportComponent = ({ monthKey, report, index, onlyOne = false }) => {
                 <SectionSubTitle>
                   {record.target_location}의 관리 평가
                 </SectionSubTitle>
+
+                {graphImage && (
+                  <div className="mb-20">
+                    <img
+                      src={getDriveImageUrl(graphImage)} // 변환 적용
+                      alt={`${record.target_location}의 관리 평가 이미지`}
+                      className="w-full mx-auto object-cover h-[369px]"
+                    />
+                  </div>
+                )}
+
                 <DlList>
                   <Dl>
                     <Dt>조사 일시</Dt>
@@ -388,6 +407,7 @@ const Content = ({ data }) => {
                   onlyOne={
                     Object.entries(data.reports_by_month || {}).length === 1
                   }
+                  graphImage={data.basic_info?.field_1}
                 />
               ),
             )}
