@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/immutability */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useModalStore, useLocationsStore } from "../stores/hooks";
 
 import IconArrowY from "../assets/arrow-y.png";
@@ -353,16 +353,51 @@ const getDriveImageUrl = (url) => {
 
 const ImageSlider = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const dragStartX = useRef(null);
 
   if (!images || images.length === 0) return null;
 
+  const handleDragStart = (e) => {
+    dragStartX.current =
+      e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+  };
+
+  const handleDragEnd = (e) => {
+    if (dragStartX.current === null) return;
+
+    const endX =
+      e.type === "touchend" ? e.changedTouches[0].clientX : e.clientX;
+
+    const diff = dragStartX.current - endX;
+
+    if (Math.abs(diff) > 50) {
+      // 50px 이상 드래그해야 넘어감
+      if (diff > 0) {
+        // 왼쪽으로 드래그 → 다음 슬라이드
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+      } else {
+        // 오른쪽으로 드래그 → 이전 슬라이드
+        setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+      }
+    }
+
+    dragStartX.current = null;
+  };
+
   return (
     <div className="relative mb-37">
-      <div className="w-full overflow-hidden">
+      <div
+        className="w-full overflow-hidden cursor-grab active:cursor-grabbing"
+        onMouseDown={handleDragStart}
+        onMouseUp={handleDragEnd}
+        onTouchStart={handleDragStart}
+        onTouchEnd={handleDragEnd}
+      >
         <img
-          src={getDriveImageUrl(images[currentIndex])} // 변환 적용
+          src={getDriveImageUrl(images[currentIndex])}
           alt={`이미지 ${currentIndex + 1}`}
-          className="w-full object-cover h-[369px]"
+          className="w-full object-cover h-[369px] select-none pointer-events-none"
+          draggable={false}
         />
       </div>
       {images.length > 1 && (
