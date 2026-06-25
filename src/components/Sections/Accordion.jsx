@@ -129,7 +129,7 @@ const SectionAccordion = () => {
       keyColor: "#64B5F6",
     },
     {
-      title: "지난 보고서 모아보기",
+      title: "해양보호구역 모니터링 보고서",
       link: "https://issuu.com/i_greenkorea/docs/_dd3d7b9a55e235?fr=xKAE9_zMzMw",
       keyColor: "#8BC3F8",
     },
