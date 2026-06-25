@@ -17,7 +17,7 @@ const ShareButton = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleClickShare = () => {
-    navigator.clipboard.writeText("https://www.greenocean.com");
+    navigator.clipboard.writeText("https://ocean.greenkorea.org/");
 
     openModal(
       <AlertModal
