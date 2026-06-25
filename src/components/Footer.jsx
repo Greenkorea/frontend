@@ -5,7 +5,7 @@ import IconYoutube from "../assets/youtube.png";
 
 const Footer = () => {
   const handleClickBlog = () => {
-    window.open("https://blog.greenkorea.org", "_blank");
+    window.open("https://blog.naver.com/greenkorea_united", "_blank");
   };
   const handleClickYoutube = () => {
     window.open("https://www.youtube.com/@Greenkorea_united", "_blank");
