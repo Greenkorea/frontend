@@ -272,8 +272,6 @@ const Members = () => {
         <br />
         조사 최황
         <br />
-        홍보
-        <br />
         개발 도토리랩스
         <br />
         디자인 손에손잡고
@@ -302,7 +300,7 @@ const SectionAccordion = () => {
     },
     {
       title: "지난 보고서 모아보기",
-      link: "https://drive.google.com/drive/u/0/folders/1mLgXYIjnhonO3GrWqa7Qgu3DWMdVMosi",
+      link: "https://issuu.com/i_greenkorea/docs/_dd3d7b9a55e235?fr=xKAE9_zMzMw",
       keyColor: "#8BC3F8",
     },
     {
