@@ -124,8 +124,8 @@ const SectionAccordion = () => {
   const items = [
     { title: "만든 사람들", component: <Members />, keyColor: "#219CF7" },
     {
-      title: "녹색연합?",
-      link: "https://www.greenkorea.org",
+      title: "녹색연합",
+      link: "https://www.greenkorea.org/introduce/greenkorea/",
       keyColor: "#64B5F6",
     },
     {
